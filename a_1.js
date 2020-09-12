@@ -23,7 +23,6 @@ function setup() { "use strict";
         canvas.width=canvas.width;
 
         if (color == "rgb(255,255,255)"){
-            console.log("black");
             context.fillStyle = "black";
             context.fillRect(0,0,canvas.width,canvas.height);
         }
@@ -37,6 +36,8 @@ function setup() { "use strict";
             context.closePath();
             context.fill();
         }
+
+        
         context.translate(dx, dy);
         drawDreiEck();
     }
