@@ -20,8 +20,14 @@ function setup() { "use strict";
         var dx = xSlider.value;
         var dy = ySlider.value;
         sl = sideSize.value;
-        canvas.width = canvas.width;
-        
+        canvas.width=canvas.width;
+
+        if (color == "rgb(255,255,255)"){
+            console.log("black");
+            context.fillStyle = "black";
+            context.fillRect(0,0,canvas.width,canvas.height);
+        }
+
         function drawDreiEck() {
             context.beginPath();
             context.fillStyle = color;
