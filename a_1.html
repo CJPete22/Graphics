@@ -4,8 +4,19 @@
         <title>Simple demonstration of slider interface</title>
     </head>
     <body>
-        <canvas id="myCanvas" width="400" height="400"></canvas>
-        <input id="slider1" type="range" min="#00" max="#FF" />  
+        <canvas id="myCanvas" width="500" height="400"></canvas>
+        <ul>
+        <li>Adjust X Coordinate</br>
+            <input id="xslider" type="range" min="-200" max="200"/></li>
+        <li>Adjust Y Coordinate</br>
+            <input id="yslider" type="range" min="-200" max="200"/></li>
+        <li>Adjust Triangle Size</br>
+            <input id="sizeChange" type="range" min="0" max="400"/></li>
+        </ul>
+        
+        Red: <input id="slider1" type="range" min="0" max="255" />
+        Green: <input id="slider2" type="range" min="0" max="255" />
+        Blue: <input id="slider3" type="range" min="0" max="255" />
         <script src="a_1.js" id="module"></script>
   </body>
 </html>
