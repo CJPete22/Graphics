@@ -1,0 +1,24 @@
+The program is a very simple kind of game and I had a lot of fun with the sliders. 
+The "goal" is to find the correct colors to turn the triangle. 
+If you get one, a circle colors with the corrosponding color. 
+Once all the circles are colored, you win. 
+The three colors are just the three extremes of the rgb scale.
+
+Also a warning: I started coding this and wound up with half my functions named
+using German. I'll avoid this in the future. 
+Anyway, here is a handy key for non-german speakers.
+"drawDreiEck" --> "drawTriang"
+"drawKreis" --> "drawCircle"
+"Ecke" --> "Corner"
+
+Reflection/Feedback:
+I appreciated the open-endedness of this assignment quite a bit. It was fun 
+to have so much freedom in what I was coding. I would maybe appreciate a bit
+more information on how you prefer code structured for ease of TA grading and 
+such, but I suspect that will be shared after this assignment, or I'll just
+ask myself. I've follow the standards I know as best as I could and have my
+own little copyright thing at the top of the documents, though if there is 
+a prefered standard format for those, I'd also appreciate knowing that. 
+
+Carly Peterson
+cjpeterson7@wisc.edu
