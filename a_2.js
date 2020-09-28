@@ -14,6 +14,8 @@ window.onload = function () { "use strict";
     var hRad = 0; var hAngVel = 0;
     var sRad = 0; var sAngVel = 0.005;
     var sPos = 0; var sVel = 0.08;
+    var onHorse = true;
+    var rX = 0; var rY = 0; var rXVel = 0.001; var rYVel = -0.5;
      
     function drawWindmill() {
         ctx.fillStyle = "brown";
@@ -62,17 +64,7 @@ window.onload = function () { "use strict";
         ctx.fill();
     }
 
-    function drawRider(rPos) {
-        ctx.beginPath();
-        ctx.fillStyle = "white";
-        ctx.save();
-        ctx.rect(20,90,6,25);
-        ctx.arc(23,82,10,0,Math.PI*2);
-        ctx.fill();
-        ctx.restore();
-    }
-    
-    function drawHorse(hRad, nRider) {
+    function drawHorse(hRad) {
         ctx.beginPath();
         ctx.fillStyle = "#421d03";
         ctx.save();
@@ -127,8 +119,52 @@ window.onload = function () { "use strict";
         ctx.rotate(hRad-(Math.PI/2));
         ctx.rect(-2.5,0,5,30);
         ctx.fill(); ctx.restore(); ctx.restore();
+    }
 
-        if(nRider) drawRider(hVel);
+    function drawRider(onHorse) {
+        ctx.beginPath();
+        ctx.fillStyle = "white";
+        ctx.save();
+        ctx.translate(25,50);
+        ctx.save();
+
+        // Foreground Leg
+        if(!onHorse) {
+            ctx.rotate(Math.PI / 4);
+            ctx.rect(-3,-2,6,30);
+            ctx.restore(); ctx.save();
+        }
+
+        // Background Leg
+        ctx.rotate(-Math.PI / 4);
+        ctx.rect(-3,-2,5,30);
+        ctx.restore(); ctx.save(); ctx.fill();
+
+        // Body and Head
+        ctx.beginPath();
+        ctx.translate(0,-25);
+        ctx.rect(-3,0,6,25);
+        ctx.arc(0,-10,10,0,Math.PI*2);
+        ctx.fill(); ctx.save();
+
+        if (onHorse) {
+            ctx.beginPath();
+            ctx.translate(0,10);
+            ctx.rotate(-Math.PI / 6);
+            ctx.rect(0,0,25,5);
+            ctx.fill();
+        } else {
+            ctx.beginPath();
+            ctx.translate(0,10);
+            ctx.rotate(-Math.PI / 4);
+            ctx.rect(0,0,25,5);
+            ctx.scale(-1,1);
+            ctx.rotate(-Math.PI / 2);
+            ctx.rect(0,0,25,5);
+            ctx.fill();
+        }
+
+        ctx.restore();
     }
 
     function drawBG(wRad, sPos, sAngVel) {
@@ -181,7 +217,7 @@ window.onload = function () { "use strict";
         ctx.font = "80px Playbill";
         ctx.textAlign = "center";
         ctx.fillStyle = "purple";
-        ctx.fillText("A Beautiful Day to Fight Giants", canvas.width/2, 50);
+        ctx.fillText("A Beautiful Day to Fight Giants...", 20+canvas.width/3, 50);
         ctx.restore();
     }
 
@@ -190,11 +226,8 @@ window.onload = function () { "use strict";
         canvas.width = window.innerWidth - 25;
         canvas.height = window.innerHeight - 50;
         wRad += wind;
-        hRad += hAngVel;
-        hVel = hAngVel * 30;
-        hPos += hVel;
-        sRad += sAngVel;
-        sPos += sVel;
+        hRad += hAngVel; hVel = hAngVel * 30; hPos += hVel;
+        sRad += sAngVel; sPos += sVel;
         
         if (hPos >= canvas.width) hPos = -50;
         if (hPos < -50) hPos = canvas.width;
@@ -213,8 +246,21 @@ window.onload = function () { "use strict";
         drawBlades(wRad);
         ctx.restore(); ctx.restore(); ctx.save();
 
+        ctx.save();
         ctx.translate(hPos,canvas.height - 130);
-        drawHorse(hRad, true);
+        drawHorse(hRad);
+        if (hPos <= canvas.width - 500 && onHorse) { 
+            ctx.translate(hPos+55,canvas.height - 146);
+            drawRider(onHorse);
+            rX = hPos; rY = canvas.height - 146;
+        } else {
+             onHorse = false;
+             rX += rXVel;
+             rY += rYVel;
+
+             ctx.translate(rX, rY);
+             drawRider(onHorse);
+        }
     }
     
     sVal.addEventListener("input", function(){hAngVel = sVal.value/1000});
