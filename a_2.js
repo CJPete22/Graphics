@@ -8,14 +8,15 @@ Undergrad working toward BS of Computer Science and German
 window.onload = function () { "use strict";
     var canvas = document.getElementById('myCanvas');
     var sVal = document.getElementById('speed');
+    var btn = document.getElementById('reset');
     var ctx = canvas.getContext('2d');
-    var wRad = 0; var wind = -0.05;
+    var wRad = 0; var wAngVel = -0.05;
     var hPos = 0; var hVel = 0;
     var hRad = 0; var hAngVel = 0;
     var sRad = 0; var sAngVel = 0.005;
     var sPos = 0; var sVel = 0.08;
-    var onHorse = true;
-    var rX = 0; var rY = 0; var rXVel = 0.001; var rYVel = -0.5;
+    var rX = 0; var rY = 0; var rXVel = 0; var rYVel = 0;
+    var onHorse = true; var xAcc = 0.02; var yAcc = 0.02;
      
     function drawWindmill() {
         ctx.fillStyle = "brown";
@@ -223,9 +224,9 @@ window.onload = function () { "use strict";
 
     function draw() {
         requestAnimationFrame(draw);
-        canvas.width = window.innerWidth - 25;
-        canvas.height = window.innerHeight - 50;
-        wRad += wind;
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight - 40;
+        wRad += wAngVel;
         hRad += hAngVel; hVel = hAngVel * 30; hPos += hVel;
         sRad += sAngVel; sPos += sVel;
         
@@ -252,17 +253,27 @@ window.onload = function () { "use strict";
         if (hPos <= canvas.width - 500 && onHorse) { 
             ctx.translate(hPos+55,canvas.height - 146);
             drawRider(onHorse);
-            rX = hPos; rY = canvas.height - 146;
+            rX = hPos; rXVel = hVel;
+            rY = canvas.height -146;
         } else {
+             console.log(rX, rXVel, xAcc);
              onHorse = false;
+
+             // X-Axis
+             if(rXVel > 0) rXVel -= xAcc;
+             else rXVel = 0;
              rX += rXVel;
-             rY += rYVel;
+
+             // Y-Axis
+             rYVel += yAcc;
+             rY -= rYVel;
 
              ctx.translate(rX, rY);
              drawRider(onHorse);
         }
     }
-    
     sVal.addEventListener("input", function(){hAngVel = sVal.value/1000});
+    btn.addEventListener("click",function(){
+        wRad=0; hPos=0; hRad=0; sPos=0; onHorse=true;}); 
     draw();
 }

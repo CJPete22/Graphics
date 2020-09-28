@@ -9,13 +9,30 @@ Undergrad working toward BS of Computer Science and German
     <head>
         <title>Assignment 2</title>
     </head>
+    <style>
+        .canvas {
+            position:absolute;
+            top:0;
+            left:0;
+        }
+        .slider {
+            position:absolute;
+            left:20px;
+            bottom:0;
+            font-weight:bold;
+        }
+        .button {
+            position:absolute;
+            bottom:20px;
+            right:20px;
+        }
+    </style>
     <body>
-        <canvas id="myCanvas" width="1000" height="500">
-        </canvas>
-        <br>
-        Retreat!
-        <input id="speed" type="range" min="-100" max="100"/>
-        Charge!
+        <canvas id="myCanvas" class="canvas" width="1000" height="500"></canvas>
+        <p class="slider">
+        Retreat! <input id="speed" type="range" min="-100" max="100"/> Charge!
+        </p>
+        <button id="reset" class=button>Reset</button>
         <script src="a_2.js" id="module"></script>
     </body>
 </html>
