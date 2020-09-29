@@ -66,106 +66,100 @@ window.onload = function () { "use strict";
     }
 
     function drawHorse(hRad) {
-        ctx.beginPath();
         ctx.fillStyle = "#421d03";
-        ctx.save();
-        ctx.translate(50,35);
+        ctx.save();                                        // Base Coordinate System, stack 1
 
 	// Neck
-        ctx.translate(40,5);
-        ctx.rotate(-(Math.PI / 4) + 0.2);
+        ctx.beginPath();
+        ctx.translate(90,40);                              // Upper Right Body
+        ctx.rotate(-(Math.PI / 4) + 0.2);                  // Initial Neck Angle
         var bRad = (25 / 180 * Math.PI) * Math.sin(hRad);
-        ctx.rotate(bRad);
-        ctx.rect(0,0,35,5);
+        ctx.rotate(bRad);                                  // Neck Angle based on hRad
+        ctx.rect(0,0,35,5); ctx.fill();
 
-	// Head
-        ctx.translate(40,-15);
-        ctx.rotate(Math.PI / 4);
+        ctx.beginPath();
+        ctx.translate(40,-15);                             // Neck End
+        ctx.rotate(Math.PI / 4);                           // Horizontal to Base X-Axis
         ctx.rect(0,0,30,20);
-        ctx.restore();
+        ctx.restore();                                     // Base Coordinate System, stack empty
         ctx.fill();
 
-        ctx.save();
+        ctx.save();                                        // Base Coordinate System, stack 1
+        ctx.translate(50,70); ctx.save();                  // Lower Left Body, stack 2
+
         ctx.beginPath();
-        ctx.translate(50,70);
-        ctx.save();
-
-        // Background Back Leg
-        ctx.translate(5,0);
-        ctx.rotate(hRad);
+        ctx.translate(5,0);                                // Background Back Leg
+        ctx.rotate(hRad);                                  // Movement
         ctx.rect(-2.5,0,5,30);
-        ctx.restore(); ctx.save();
+        ctx.restore(); ctx.save(); ctx.fill();             // Lower Left Body, stack 2
 
-        // Background Front Leg
-        ctx.translate(45,0);
-        ctx.rotate(hRad);
-        ctx.rect(-2.5,0,5,30);
-
-        ctx.fillStyle = "black"; ctx.fill();
         ctx.beginPath();
-        ctx.restore(); ctx.restore();
-        ctx.translate(50,35);
+        ctx.translate(45,0);                               // Background Front Leg
+        ctx.rotate(hRad);                                  // Movement
+        ctx.rect(-2.5,0,5,30); ctx.fill();
+
+        ctx.fillStyle = "black";
+        ctx.beginPath();
+        ctx.restore(); ctx.restore();                      // Base Coordinate System, stack empty
+        ctx.translate(50,35);                              // Upper Left Body
         ctx.rect(0,0,50,40);
-        ctx.translate(0,35);
-        ctx.save();
+        ctx.translate(0,35); ctx.save(); ctx.fill();       // Lower Left Body, stack 1
 
-	//Back Leg
-        ctx.translate(5,0);
-        ctx.rotate(hRad-(Math.PI/2));
+	ctx.beginPath();
+        ctx.translate(5,0);                                // Back Leg
+        ctx.rotate(hRad-(Math.PI/2));                      // Movement
         ctx.rect(-2.5,0,5,30);
-        ctx.restore(); ctx.save();
+        ctx.restore(); ctx.save(); ctx.fill();             // Base Coordinate System, stack 1
 
-	// Front Leg
-        ctx.translate(45,0);
-        ctx.rotate(hRad-(Math.PI/2));
+	ctx.beginPath();
+        ctx.translate(45,0);                               // Front Leg
+        ctx.rotate(hRad-(Math.PI/2));                      // Movement
         ctx.rect(-2.5,0,5,30);
-        ctx.fill(); ctx.restore(); ctx.restore();
+        ctx.fill(); ctx.restore();                         // Base Coordinate System, stack empty
     }
 
     function drawRider(onHorse) {
-        ctx.beginPath();
-        ctx.fillStyle = "white";
-        ctx.save();
-        ctx.translate(25,50);
-        ctx.save();
+        ctx.fillStyle = "white"; ctx.save();               // Base Coordinate System, stack 1
+        ctx.translate(25,50); ctx.save();                  // Figure Center, stack 2
 
         // Foreground Leg
         if(!onHorse) {
-            ctx.rotate(Math.PI / 4);
+            ctx.beginPath();
+            ctx.rotate(Math.PI / 4);                       // Right Leg
             ctx.rect(-3,-2,6,30);
-            ctx.restore(); ctx.save();
+            ctx.restore(); ctx.save(); ctx.fill();         // Figure Center, stack 2
         }
 
-        // Background Leg
-        ctx.rotate(-Math.PI / 4);
+        ctx.beginPath();
+        ctx.rotate(-Math.PI / 4);                          // Right Leg (Background)
         ctx.rect(-3,-2,5,30);
-        ctx.restore(); ctx.save(); ctx.fill();
+        ctx.restore(); ctx.save(); ctx.fill();             // Figure Center, stack 2
 
         // Body and Head
         ctx.beginPath();
-        ctx.translate(0,-25);
+        ctx.translate(0,-25);                              // Figure Top
         ctx.rect(-3,0,6,25);
-        ctx.arc(0,-10,10,0,Math.PI*2);
-        ctx.fill(); ctx.save();
+        ctx.arc(0,-10,10,0,Math.PI*2);                     // Head
+        ctx.fill(); ctx.save();                            // Figure Top, stack 3
 
         // Arm(s)
         if (onHorse) {
             ctx.beginPath();
-            ctx.translate(0,10);
-            ctx.rotate(-Math.PI / 6);
+            ctx.translate(0,10);                           // Arm Postition
+            ctx.rotate(-Math.PI / 6);                      // Arm Angle
             ctx.rect(0,0,25,5);
             ctx.fill();
         } else {
             ctx.beginPath();
-            ctx.translate(0,10);
-            ctx.rotate(-Math.PI / 4);
+            ctx.translate(0,10);                           // Arm Position
+            ctx.rotate(-Math.PI / 4);                      // Arm Angle
             ctx.rect(0,0,25,5);
-            ctx.scale(-1,1);
-            ctx.rotate(-Math.PI / 2);
+            ctx.scale(-1,1);                               // Reflect to Repeat Arm
+            ctx.rotate(-Math.PI / 2);                      // Arm Angle
             ctx.rect(0,0,25,5);
             ctx.fill();
         }
-        ctx.restore(); ctx.restore(); ctx.restore();
+        ctx.restore(); ctx.restore(); ctx.restore();       // Base Coordinate System, stack empty
     }
 
     function drawBG(wRad, sPos, sAngVel) {
@@ -173,17 +167,15 @@ window.onload = function () { "use strict";
         ctx.beginPath();
         ctx.rect(0,0,canvas.width,canvas.height);
         ctx.fillStyle = "#9cc2ff"
-        ctx.fill();
+        ctx.fill(); ctx.save();                            // Base Coordinate System, stack 1
 
         // Background Windmill
-        ctx.save();
-        ctx.translate(canvas.width - 200,canvas.height - 235);
-        ctx.scale(0.75,0.75);
+        ctx.translate(canvas.width-200,canvas.height-235); // Windmill Position
+        ctx.scale(0.75,0.75);                              // Scale to Mimic Distance
         drawWindmill();
-        ctx.translate(100,100);
-        ctx.save();
+        ctx.translate(100,100); ctx.save();                // Blade Center, stack 2
         drawBlades(wRad-(Math.PI/4)+0.5);
-        ctx.restore(); ctx.restore();
+        ctx.restore(); ctx.restore();                      // Base Coordinate System, stack empty
 
         // Ground
         ctx.beginPath();
@@ -193,18 +185,18 @@ window.onload = function () { "use strict";
 
         // Sun
         ctx.beginPath();
-        ctx.translate(200,150);
+        ctx.translate(200,150);                            // Sun Position
         ctx.arc(0,0,50,0,2*Math.PI);
         ctx.fillStyle = "yellow";
-        ctx.fill();
+        ctx.fill(); ctx.save();                            // Sun Position, stack 1
 
         // Sun Rays
-        ctx.save();
         var col = true;
-        for(var i = sRad; i < sRad+(2*Math.PI); i+=Math.PI/10) {
+        for(var i=sRad; i<sRad+(2*Math.PI); i+=Math.PI/10){
             ctx.beginPath();
-            ctx.rotate(i);
+            ctx.rotate(i);                                 // Ray Placement
             ctx.rect(60 + sPos,0,10,5);
+            // Alternate Every Other Color
             if (col == true) {
                 col = !col;
                 ctx.fillStyle = "yellow";
@@ -213,75 +205,77 @@ window.onload = function () { "use strict";
                 ctx.fillStyle = "orange";
             }
             ctx.fill();
-            ctx.restore(); ctx.save();
+            ctx.restore(); ctx.save();                     // Sun Position, stack 1
         }
         ctx.font = "80px Playbill";
         ctx.textAlign = "center";
         ctx.fillStyle = "purple";
         ctx.fillText("A Beautiful Day to Fight Giants...", 20+canvas.width/3, 50);
-        ctx.restore();
+        ctx.restore();                                     // Base Coordinate System, stack empty
     }
  
     function draw() {
         requestAnimationFrame(draw);
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight - 40;
-        wRad += wAngVel;
-        hRad += hAngVel; hVel = hAngVel * 30; hPos += hVel;
-        sRad += sAngVel; sPos += sVel; 
+        wRad += wAngVel;                                   // Calculate Windmill Radians
+        hRad += hAngVel;                                   // Calculate Horse Radians
+        hVel = hAngVel*30; hPos += hVel;                   // Calculate Horse Velocity and Position
+        sRad += sAngVel; sPos += sVel;                     // Calculate Sun Turn Velocity and Ray Movement
 
+        // Correct for Screen Edges
         if (hPos >= canvas.width) hPos = -150;
         if (hPos < -150) hPos = -150;
 
+        // Limit Sun Ray Position
         if (sPos >= 20) sVel *= -1;
         if (sPos <= 0) sVel *= -1;
 
-        ctx.save();
+        ctx.save();                                        // Base Coordinate System, stack 1
         drawBG(wRad, sPos, sAngVel);
-        ctx.restore(); ctx.save();
+        ctx.restore(); ctx.save();                         // Base Coordinate System, stack 1
 
-        ctx.translate(canvas.width - 400,canvas.height - 300);
+        ctx.translate(canvas.width-400,canvas.height-300); // Canvas Bottom Right
         drawWindmill();
-        ctx.translate(100,100);
-        ctx.save();
+        ctx.translate(100,100); ctx.save();                // Blade Center, stack 2
         drawBlades(wRad);
-        ctx.restore(); ctx.restore(); ctx.save();
+        ctx.restore(); ctx.restore(); ctx.save();          // Base Coordinate System, stack 1
 
-        ctx.save();
-        ctx.translate(hPos,canvas.height - 130);
+        ctx.translate(hPos,canvas.height-130);             // Move Horse
         drawHorse(hRad);
-        if (hPos <= canvas.width - 400 && onHorse) { 
-            ctx.translate(hPos+55,canvas.height - 146);
+        ctx.restore(); ctx.save();                         // Base Coordinate System, stack 1
+        if (hPos <= canvas.width-400 && onHorse) {
+            ctx.translate(hPos+55,canvas.height-146);      // Move Rider
             drawRider(onHorse);
-            rX = hPos+hVel+55; rXVel = -wAngVel * 150;
-            rY = canvas.height-146;
-            ctx.restore(); ctx.save();
+            rX = hPos+hVel+55; rXVel = -wAngVel*150;       // Calculate Initial Figure X Position and Velocity
+            rY = canvas.height-146;                        // Calculate Initial Figure Y Position
+            ctx.restore(); ctx.save();                     // Base Coordinate System, stack 1
         } else {
              onHorse = false;
 
              // X-Axis
-             if(rXVel > 0) rXVel -= xAcc;
-             else rXVel = 0;
-             rX += rXVel;
+             if(rXVel > 0) rXVel -= xAcc; else rXVel = 0;  // Calculate Figure X Acceleration
+             rX += rXVel;                                  // Calculate Figure X Position
  
              // Y-Axis
-             rYVel += yAcc;
-             rY -= rYVel;
+             rYVel += yAcc; rY -= rYVel;                   // Calculate Figure Y Velocity and Position
              
-             ctx.translate(rX, rY);
+             ctx.translate(rX, rY);                        // Move Figure
              drawRider(onHorse);
+             ctx.restore();                                // Base Coordinate System, stack empty
         }
-        ctx.restore(); ctx.restore();
-        if (hPos < -100 || rX > canvas.width) {
+
+        if (hVel*-1 > 0 || rX >= canvas.width) {
             ctx.beginPath();
             ctx.font = "80px Playbill";
             ctx.textAlign = "left";
             ctx.fillStyle = "purple";
-            ctx.fillText("...or not",50+canvas.width*2/3, 250);
+            ctx.fillText("...or not",100+canvas.width*2/3, 280);
             ctx.fill();
         }
     }
-    sVal.addEventListener("input", function(){hAngVel = sVal.value/1000});
+    
+    sVal.addEventListener("input", function(){hAngVel = sVal.value*0.001});
     btn.addEventListener("click",function(){
         wRad=0; hPos=0; hRad=0; sPos=0; onHorse=true; rYVel = 0;}); 
     draw();
